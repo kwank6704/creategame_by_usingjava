@@ -53,7 +53,7 @@ public class MainApplication extends Application {
 		startButtonBox.setAlignment(Pos.CENTER);
 		startButtonBox.setPadding(new Insets(15));
 		startButtonBox.setOnMouseClicked(mouseEvent -> {
-			setupGenderRootPane(primaryStage);
+			setupSettingRootPane(primaryStage);
 		});
 		
 		Image startImage = new Image(ClassLoader.getSystemResource("subelement_image/button/start.png").toString());
@@ -86,6 +86,28 @@ public class MainApplication extends Application {
 		
 		settingButtonBox.getChildren().add(settingView);
 		return settingButtonBox;
+	}
+	
+	private StackPane setupSettingRootPane(Stage primaryStage) {
+		StackPane root = new StackPane();
+		root.setPrefSize(1440, 720);
+		root.setStyle("-fx-background-color: #D0C8C8;");
+		
+		Image genderBackground = new Image(ClassLoader.getSystemResource("screen/character_choose.png").toString());
+		ImageView genderView = new ImageView(genderBackground);
+		root.getChildren().add(genderView);
+		
+		VBox genderPane = new VBox(2);
+		genderPane.setSpacing(250);
+		genderPane.getChildren().add(setupSettingButton(primaryStage));
+		genderPane.getChildren().add(setupGenderChoosePane(primaryStage));
+
+		root.getChildren().add(genderPane);
+		
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		
+		return root;
 	}
 	
 	private StackPane setupGenderRootPane(Stage primaryStage) {
