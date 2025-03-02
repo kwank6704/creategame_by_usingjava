@@ -3,7 +3,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -19,10 +18,9 @@ import player.Player;
 public class MainApplication extends Application {
 	@Override
 	public void start(Stage primaryStage) {
-		BorderPane root = setupRootPane();
-		Scene scene = new Scene(root);
-
-		setupKeyEvents(scene);
+		StackPane startRoot = setupStartRootPane(primaryStage);
+		
+		Scene scene = new Scene(startRoot);
 		
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("CEDT Game");
@@ -31,29 +29,151 @@ public class MainApplication extends Application {
 		primaryStage.show();
 		primaryStage.setOnCloseRequest(e -> Platform.exit());
 	}
+	
+	private StackPane setupStartRootPane(Stage primaryStage) {
+		StackPane root = new StackPane();
+		root.setPrefSize(1440, 720);
+		root.setStyle("-fx-background-color: #D0C8C8;");
+		
+		Image startBackground = new Image(ClassLoader.getSystemResource("screen/homescreen.png").toString());
+		ImageView startView = new ImageView(startBackground);
+		root.getChildren().add(startView);
+		
+		VBox startPane = new VBox(2);
+		startPane.setSpacing(250);
+		startPane.getChildren().add(setupSettingButton(primaryStage));
+		startPane.getChildren().add(setupStartButton(primaryStage));
+		
+		root.getChildren().add(startPane);
+		return root;
+	}
+	
+	private HBox setupStartButton(Stage primaryStage) {
+		HBox startButtonBox = new HBox();
+		startButtonBox.setAlignment(Pos.CENTER);
+		startButtonBox.setPadding(new Insets(15));
+		startButtonBox.setOnMouseClicked(mouseEvent -> {
+			setupGenderRootPane(primaryStage);
+		});
+		
+		Image startImage = new Image(ClassLoader.getSystemResource("subelement_image/button/start.png").toString());
+		ImageView startView = new ImageView(startImage);
+		Platform.runLater(() -> {
+			double ratio = startImage.getHeight() / startImage.getWidth();
+			startView.setFitWidth(300);
+			startView.setFitHeight(300 * ratio);
+		});
+		
+		startButtonBox.getChildren().add(startView);
+		return startButtonBox;
+	}
+	
+	private HBox setupSettingButton(Stage primaryStage) {
+		HBox settingButtonBox = new HBox();
+		settingButtonBox.setAlignment(Pos.TOP_RIGHT);
+		settingButtonBox.setPadding(new Insets(15));
+		settingButtonBox.setOnMouseClicked(mouseEvent -> {
+			setupGameRootPane(primaryStage, Gender.MALE);
+		});
+		
+		Image settingImage = new Image(ClassLoader.getSystemResource("subelement_image/button/setting.png").toString());
+		ImageView settingView = new ImageView(settingImage);
+		Platform.runLater(() -> {
+			double ratio = settingImage.getHeight() / settingImage.getWidth();
+			settingView.setFitWidth(100);
+			settingView.setFitHeight(100 * ratio);
+		});
+		
+		settingButtonBox.getChildren().add(settingView);
+		return settingButtonBox;
+	}
+	
+	private StackPane setupGenderRootPane(Stage primaryStage) {
+		StackPane root = new StackPane();
+		root.setPrefSize(1440, 720);
+		root.setStyle("-fx-background-color: #D0C8C8;");
+		
+		Image genderBackground = new Image(ClassLoader.getSystemResource("screen/character_choose.png").toString());
+		ImageView genderView = new ImageView(genderBackground);
+		root.getChildren().add(genderView);
+		
+		VBox genderPane = new VBox(2);
+		genderPane.setSpacing(250);
+		genderPane.getChildren().add(setupSettingButton(primaryStage));
+		genderPane.getChildren().add(setupGenderChoosePane(primaryStage));
 
-	private BorderPane setupRootPane() {
+		root.getChildren().add(genderPane);
+		
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		
+		return root;
+	}
+	
+	private HBox setupGenderChoosePane(Stage primaryStage) {
+		HBox genderChoosePane = new HBox();
+		genderChoosePane.setAlignment(Pos.CENTER);
+		genderChoosePane.setSpacing(100);
+		genderChoosePane.setPadding(new Insets(15));
+		
+		VBox maleBox = createGenderBox(primaryStage, Gender.MALE);
+		VBox femaleBox = createGenderBox(primaryStage, Gender.FEMALE);
+		
+		genderChoosePane.getChildren().addAll(maleBox, femaleBox);
+		return genderChoosePane;
+	}
+	
+	private VBox createGenderBox(Stage primaryStage, Gender gender) {
+		VBox genderBox = new VBox(2);
+		genderBox.setAlignment(Pos.CENTER);
+		genderBox.setSpacing(25);
+		
+		Image genderImage = new Image(ClassLoader.getSystemResource("player_image/" + gender + ".png").toString());
+		ImageView genderView = new ImageView(genderImage);
+		Platform.runLater(() -> {
+			double ratio = genderImage.getHeight() / genderImage.getWidth();
+			genderView.setFitWidth(300);
+			genderView.setFitHeight(300 * ratio);
+		});
+		
+		Image genderButtonImage = new Image(ClassLoader.getSystemResource("subelement_image/button/" + gender + ".png").toString());
+		ImageView genderButtonView = new ImageView(genderButtonImage);
+		Platform.runLater(() -> {
+			double ratio = genderButtonImage.getHeight() / genderButtonImage.getWidth();
+			genderButtonView.setFitWidth(200);
+			genderButtonView.setFitHeight(200 * ratio);
+		});
+		genderButtonView.setOnMouseClicked(mouseEvent -> {
+			setupGameRootPane(primaryStage, gender);
+		});
+		
+		genderBox.getChildren().addAll(genderView, genderButtonView);
+		return genderBox;
+	}
+	
+	private BorderPane setupGameRootPane(Stage primaryStage, Gender gender) {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(1440, 720);
 		root.setStyle("-fx-background-color: #D0C8C8;");
-
-		root.setTop(setupTopPane());
-		root.setCenter(setupGamePane());
+		
+		root.setTop(setupTopPane(primaryStage));
+		root.setCenter(setupGamePane(gender));
 		root.setLeft(setupSkillSlots());
 		root.setRight(setupInventorySlots());
 		root.setBottom(setupDialoguePane());
-
+		
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		setupKeyEvents(scene);
+		
 		return root;
 	}
 
-	private BorderPane setupTopPane() {
+	private BorderPane setupTopPane(Stage primaryStage) {
 		BorderPane topPane = new BorderPane();
 		topPane.setPadding(new Insets(15));
 		topPane.setLeft(setupStatusPane());
-		
-		Button settingButton = new Button("Setting");
-		settingButton.setStyle("-fx-background-color: #888; -fx-text-fill: white;");
-		topPane.setRight(settingButton);
+		topPane.setRight(setupSettingButton(primaryStage));
 		return topPane;
 	}
 
@@ -90,27 +210,27 @@ public class MainApplication extends Application {
 		return pane;
 	}
 
-	private StackPane setupGamePane() {
+	private StackPane setupGamePane(Gender gender) {
 		StackPane gamePane = new StackPane();
 		GridPane playerPane = new GridPane();
 
-		Player.buildPlayer(Gender.FEMALE);
+		Player.buildPlayer(gender);
 		Player player = Player.getInstance();
 		ImageView playerImage = createImageView(player.getMoveImage(), 128, 128);
 		playerPane.getChildren().add(playerImage);
 
 		String mapPath = "map_image/room_iscale.png";
 		Image mapImage = new Image(getClass().getResource(mapPath).toExternalForm());
-		ImageView background = createImageView(mapImage, 0, 0);
+		ImageView mapView = createImageView(mapImage, 0, 0);
 
 		Platform.runLater(() -> {
 			double ratio = mapImage.getHeight() / mapImage.getWidth();
 			int size = (int) Math.min(gamePane.getHeight(), gamePane.getWidth() * ratio);
-			background.setFitHeight(size);
-			background.setFitWidth(size / ratio);
+			mapView.setFitHeight(size);
+			mapView.setFitWidth(size / ratio);
 		});
 
-		gamePane.getChildren().addAll(background, playerPane);
+		gamePane.getChildren().addAll(mapView, playerPane);
 		gamePane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
 		
 		return gamePane;
