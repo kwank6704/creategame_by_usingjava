@@ -117,11 +117,11 @@ public class MainApplication extends Application {
 	}
 
 	private VBox setupSkillSlots() {
-		return createSlotsPane(3, "subelement_image/guild/knight.png", 60);
+		return createSlotsPane(3, "game-logo.png", 60);
 	}
 
 	private VBox setupInventorySlots() {
-		return createSlotsPane(5, "subelement_image/guild/knight.png", 45);
+		return createSlotsPane(5, "game-logo.png", 45);
 	}
 
 	private VBox createSlotsPane(int count, String imagePath, int iconSize) {
