@@ -16,14 +16,14 @@ import player.Gender;
 import player.Player;
 
 public class MainApplication extends Application {
+	private static final String GameName = "CEDT Game";
+	private static final String NameSpliter = " | ";
+	private static String GamePhase;
+	
 	@Override
 	public void start(Stage primaryStage) {
-		StackPane startRoot = setupStartRootPane(primaryStage);
-		
-		Scene scene = new Scene(startRoot);
-		
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("CEDT Game");
+		setupStartRootPane(primaryStage);
+
 		primaryStage.getIcons().add(new Image(ClassLoader.getSystemResource("game-logo.png").toString()));
 		primaryStage.setResizable(false);
 		primaryStage.show();
@@ -31,6 +31,8 @@ public class MainApplication extends Application {
 	}
 	
 	private StackPane setupStartRootPane(Stage primaryStage) {
+		GamePhase = "Start!";
+		
 		StackPane root = new StackPane();
 		root.setPrefSize(1440, 720);
 		root.setStyle("-fx-background-color: #D0C8C8;");
@@ -44,6 +46,10 @@ public class MainApplication extends Application {
 		startPane.getChildren().add(setupSettingButton(primaryStage));
 		startPane.getChildren().add(setupStartButton(primaryStage));
 		
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle(GameName + NameSpliter + GamePhase);
+		
 		root.getChildren().add(startPane);
 		return root;
 	}
@@ -53,7 +59,7 @@ public class MainApplication extends Application {
 		startButtonBox.setAlignment(Pos.CENTER);
 		startButtonBox.setPadding(new Insets(15));
 		startButtonBox.setOnMouseClicked(mouseEvent -> {
-			setupSettingRootPane(primaryStage);
+			setupGenderRootPane(primaryStage);
 		});
 		
 		Image startImage = new Image(ClassLoader.getSystemResource("subelement_image/button/start.png").toString());
@@ -69,11 +75,15 @@ public class MainApplication extends Application {
 	}
 	
 	private HBox setupSettingButton(Stage primaryStage) {
+		return setupSettingButton(primaryStage, Gender.MALE);
+	}
+	
+	private HBox setupSettingButton(Stage primaryStage, Gender gender) {
 		HBox settingButtonBox = new HBox();
 		settingButtonBox.setAlignment(Pos.TOP_RIGHT);
 		settingButtonBox.setPadding(new Insets(15));
 		settingButtonBox.setOnMouseClicked(mouseEvent -> {
-			setupGameRootPane(primaryStage, Gender.MALE);
+			setupSettingRootPane(primaryStage, gender);
 		});
 		
 		Image settingImage = new Image(ClassLoader.getSystemResource("subelement_image/button/setting.png").toString());
@@ -88,20 +98,20 @@ public class MainApplication extends Application {
 		return settingButtonBox;
 	}
 	
-	private StackPane setupSettingRootPane(Stage primaryStage) {
+	private StackPane setupSettingRootPane(Stage primaryStage, Gender gender) {
 		StackPane root = new StackPane();
 		root.setPrefSize(1440, 720);
 		root.setStyle("-fx-background-color: #D0C8C8;");
 		
-		Image genderBackground = new Image(ClassLoader.getSystemResource("screen/character_choose.png").toString());
+		Image genderBackground = new Image(ClassLoader.getSystemResource("screen/pause_screen.png").toString());
 		ImageView genderView = new ImageView(genderBackground);
 		root.getChildren().add(genderView);
 		
 		VBox genderPane = new VBox(2);
 		genderPane.setSpacing(250);
-		genderPane.getChildren().add(setupSettingButton(primaryStage));
-		genderPane.getChildren().add(setupGenderChoosePane(primaryStage));
-
+		genderPane.getChildren().add(setupBackButton(primaryStage, gender));
+		genderPane.getChildren().add(setupQuitButton(primaryStage));
+		
 		root.getChildren().add(genderPane);
 		
 		Scene scene = new Scene(root);
@@ -110,24 +120,83 @@ public class MainApplication extends Application {
 		return root;
 	}
 	
+	private HBox setupBackButton(Stage primaryStage, Gender gender) {
+		HBox backButtonBox = new HBox();
+		backButtonBox.setAlignment(Pos.TOP_RIGHT);
+		backButtonBox.setPadding(new Insets(15));
+		backButtonBox.setOnMouseClicked(mouseEvent -> {
+			switch (GamePhase) {
+			case "Start!": {
+				setupStartRootPane(primaryStage);
+				break;
+			}
+			case "Choose your Character!": {
+				setupGenderRootPane(primaryStage);
+				break;
+			}
+			case "Let's Play!": {
+				setupGameRootPane(primaryStage, gender);
+				break;
+			}
+			default:
+				setupStartRootPane(primaryStage);
+				break;
+			}
+		});
+		
+		Image settingImage = new Image(ClassLoader.getSystemResource("subelement_image/button/back.png").toString());
+		ImageView settingView = new ImageView(settingImage);
+		Platform.runLater(() -> {
+			double ratio = settingImage.getHeight() / settingImage.getWidth();
+			settingView.setFitWidth(100);
+			settingView.setFitHeight(100 * ratio);
+		});
+		
+		backButtonBox.getChildren().add(settingView);
+		return backButtonBox;
+	}
+	
+	private HBox setupQuitButton(Stage primaryStage) {
+		HBox quitButtonBox = new HBox();
+		quitButtonBox.setAlignment(Pos.CENTER);
+		quitButtonBox.setPadding(new Insets(15));
+		quitButtonBox.setOnMouseClicked(mouseEvent -> {
+			Platform.exit();
+		});
+		
+		Image startImage = new Image(ClassLoader.getSystemResource("subelement_image/button/quit.png").toString());
+		ImageView startView = new ImageView(startImage);
+		Platform.runLater(() -> {
+			double ratio = startImage.getHeight() / startImage.getWidth();
+			startView.setFitWidth(300);
+			startView.setFitHeight(300 * ratio);
+		});
+		
+		quitButtonBox.getChildren().add(startView);
+		return quitButtonBox;
+	}
+	
 	private StackPane setupGenderRootPane(Stage primaryStage) {
+		GamePhase = "Choose your Character!";
+		
 		StackPane root = new StackPane();
 		root.setPrefSize(1440, 720);
 		root.setStyle("-fx-background-color: #D0C8C8;");
 		
 		Image genderBackground = new Image(ClassLoader.getSystemResource("screen/character_choose.png").toString());
 		ImageView genderView = new ImageView(genderBackground);
-		root.getChildren().add(genderView);
 		
-		VBox genderPane = new VBox(2);
-		genderPane.setSpacing(250);
-		genderPane.getChildren().add(setupSettingButton(primaryStage));
-		genderPane.getChildren().add(setupGenderChoosePane(primaryStage));
-
-		root.getChildren().add(genderPane);
+		root.getChildren().add(genderView);
+		root.getChildren().add(setupSettingButton(primaryStage));
+		
+		HBox genderChoosePane = setupGenderChoosePane(primaryStage);
+		root.getChildren().add(genderChoosePane);
+		
+		StackPane.setMargin(genderChoosePane, new Insets(0, 100, 0, 100));
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
+		primaryStage.setTitle(GameName + NameSpliter + GamePhase);
 		
 		return root;
 	}
@@ -136,7 +205,7 @@ public class MainApplication extends Application {
 		HBox genderChoosePane = new HBox();
 		genderChoosePane.setAlignment(Pos.CENTER);
 		genderChoosePane.setSpacing(100);
-		genderChoosePane.setPadding(new Insets(15));
+		genderChoosePane.setPadding(new Insets(200, 15, 15, 15));
 		
 		VBox maleBox = createGenderBox(primaryStage, Gender.MALE);
 		VBox femaleBox = createGenderBox(primaryStage, Gender.FEMALE);
@@ -174,11 +243,13 @@ public class MainApplication extends Application {
 	}
 	
 	private BorderPane setupGameRootPane(Stage primaryStage, Gender gender) {
+		GamePhase = "Let's Play!";
+		
 		BorderPane root = new BorderPane();
 		root.setPrefSize(1440, 720);
 		root.setStyle("-fx-background-color: #D0C8C8;");
 		
-		root.setTop(setupTopPane(primaryStage));
+		root.setTop(setupTopPane(primaryStage, gender));
 		root.setCenter(setupGamePane(gender));
 		root.setLeft(setupSkillSlots());
 		root.setRight(setupInventorySlots());
@@ -186,16 +257,17 @@ public class MainApplication extends Application {
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
-		setupKeyEvents(scene);
+		primaryStage.setTitle(GameName + NameSpliter + GamePhase);
 		
+		setupKeyEvents(scene);		
 		return root;
 	}
 
-	private BorderPane setupTopPane(Stage primaryStage) {
+	private BorderPane setupTopPane(Stage primaryStage, Gender gender) {
 		BorderPane topPane = new BorderPane();
 		topPane.setPadding(new Insets(15));
 		topPane.setLeft(setupStatusPane());
-		topPane.setRight(setupSettingButton(primaryStage));
+		topPane.setRight(setupSettingButton(primaryStage, gender));
 		return topPane;
 	}
 
