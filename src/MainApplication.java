@@ -2,6 +2,9 @@ import gui.GenderSelectionPane;
 import gui.SettingPane;
 import gui.StartPane;
 import gui.game_component.GamePane;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -9,8 +12,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import logic.PlayerKeyEvent;
 import player.Gender;
+import player.Player;
 
 public class MainApplication extends Application {
 	private static Scene startScene;
@@ -24,7 +29,7 @@ public class MainApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		
+
 		// Build Start GUI
 		StackPane startPane = StartPane.build(primaryStage);
 		StackPane settingPane = SettingPane.build(primaryStage);
@@ -51,13 +56,44 @@ public class MainApplication extends Application {
 		primaryStage.setOnCloseRequest(e -> Platform.exit());
 	}
 
+	private void setupGameLoop(ImageView playerImage) {
+		Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(32), event -> {
+			// Player player = Player.getInstance();
+			Player player = Player.getInstance();
+
+			// Update player's position based on velocity
+			double newX = player.getX() + player.getVelX();
+			double newY = player.getY() + player.getVelY();
+
+			// Set new position
+			player.setX(newX);
+			player.setY(newY);
+			player.wall();
+			Platform.runLater(() -> {
+				playerImage.setLayoutX(newX);
+				playerImage.setLayoutY(newY);
+			});
+			
+			System.out.println("x:" + player.getX() + " | y:" + player.getY());
+
+		}));
+		gameLoop.setCycleCount(Animation.INDEFINITE);
+		gameLoop.play();
+	}
+
 	private void gamePaneSetup(Stage primaryStage, Gender gender) {
 		gamePane = GamePane.build(primaryStage, gender);
 		gameScene = new Scene(gamePane);
 
 		gameSettingAddEvent(gamePane, primaryStage);
+		
+		StackPane centerPane = (StackPane) gamePane.getCenter();
+		Pane playerPane = (Pane) centerPane.getChildren().get(1);
+		ImageView playerImage = (ImageView) playerPane.getChildren().get(0);
 
-		PlayerKeyEvent.addKeyEvent(gameScene);
+		PlayerKeyEvent.addKeyEvent(gameScene, playerImage);
+		setupGameLoop(playerImage);
+		
 		primaryStage.setScene(gameScene);
 	}
 
