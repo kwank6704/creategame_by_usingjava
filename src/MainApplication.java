@@ -58,24 +58,9 @@ public class MainApplication extends Application {
 
 	private void setupGameLoop(ImageView playerImage) {
 		Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(32), event -> {
-			// Player player = Player.getInstance();
 			Player player = Player.getInstance();
-
-			// Update player's position based on velocity
-			double newX = player.getX() + player.getVelX();
-			double newY = player.getY() + player.getVelY();
-
-			// Set new position
-			player.setX(newX);
-			player.setY(newY);
-			player.wall();
-			Platform.runLater(() -> {
-				playerImage.setLayoutX(newX);
-				playerImage.setLayoutY(newY);
-			});
-			
-			System.out.println("x:" + player.getX() + " | y:" + player.getY());
-
+			playerImage.setLayoutX(player.getX());
+			playerImage.setLayoutY(player.getY());
 		}));
 		gameLoop.setCycleCount(Animation.INDEFINITE);
 		gameLoop.play();

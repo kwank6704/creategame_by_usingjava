@@ -6,11 +6,11 @@ public class Player {
 	private static Player playerInstance;
 	private Gender gender;
 	private Direction direction;
-	private int moveImageNumber;
+	private float moveImageNumber;
 	private Image moveImage;
 	private int health;
 	private int energy;
-	private int speed = 2;
+	private int speed;
 	private int posX = 300;
 	private int posY = 100;
 	private int velX = 0;
@@ -25,24 +25,32 @@ public class Player {
 		this.gender = gender;
 		setHealth(health);
 		setEnergy(energy);
-		setSpeed(10);
+		setSpeed(5);
 		setDirection(direction);
 		setMoveImageNumber(1);
 		setMoveImage();
 	}
 
 	public void updateMoveImage(Direction newDirection) {
-		if (this.direction != newDirection) {
+		// Update player's position based on velocity
+		double newX = getX() + getVelX();
+		double newY = getY() + getVelY();
+
+		// Set new position
+		setX(newX);
+		setY(newY);
+		wall();
+
+		if (this.direction != newDirection)
 			setDirection(newDirection);
-		} else {
+		else
 			move();
-		}
 
 		setMoveImage();
 	}
 
 	public void move() {
-		this.moveImageNumber = this.moveImageNumber == 3 ? 1 : this.moveImageNumber + 1;
+		this.moveImageNumber = (float) (this.moveImageNumber >= 3 ? 1 : (this.moveImageNumber + 0.25));
 	}
 
 	public static int snap(int min, int max, int x) {
@@ -60,9 +68,9 @@ public class Player {
 	}
 
 	public void wall() {
-		// wallHall();
-		// wallIScale();
-		wallElevator();
+//		wallHall();
+		wallIScale();
+//		wallElevator();
 	}
 
 	public void wallIScale() {
@@ -142,10 +150,10 @@ public class Player {
 	}
 
 	public void setSpeed(int speed) {
-		if (energy < 5)
-			energy = 5;
-		else if (energy > 20)
-			energy = 20;
+		if (speed < 1)
+			speed = 1;
+		else if (speed > 10)
+			speed = 10;
 
 		this.speed = speed;
 	}
@@ -158,12 +166,12 @@ public class Player {
 		this.direction = direction;
 	}
 
-	public int getMoveImageNumber() {
+	public float getMoveImageNumber() {
 		return moveImageNumber;
 	}
 
-	public void setMoveImageNumber(int moveImageNumber) {
-		this.moveImageNumber = ((moveImageNumber - 1) % 3) + 1;
+	public void setMoveImageNumber(float moveImageNumber) {
+		this.moveImageNumber = moveImageNumber;
 	}
 
 	public Image getMoveImage() {
@@ -171,7 +179,7 @@ public class Player {
 	}
 
 	public void setMoveImage() {
-		String imageNumberString = Integer.toString(getMoveImageNumber());
+		String imageNumberString = Integer.toString((int) Math.floor(getMoveImageNumber()));
 		String imagePath = "/player_image/" + gender + "_walk_" + direction + "_" + imageNumberString + ".png";
 
 		this.moveImage = new Image(getClass().getResource(imagePath).toExternalForm());

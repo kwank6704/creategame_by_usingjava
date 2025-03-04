@@ -11,7 +11,6 @@ public class PlayerKeyEvent {
 	public static void addKeyEvent(Scene scene, ImageView playerImage) {
 		scene.setOnKeyPressed(keyEvent -> {
 			Player player = Player.getInstance();
-			
 			if (keyEvent.getCode() == KeyCode.W) {
 				player.updateMoveImage(Direction.UP);
 				player.setVelY(-1 * player.getSpeed());
@@ -25,7 +24,7 @@ public class PlayerKeyEvent {
 				player.updateMoveImage(Direction.RIGHT);
 				player.setVelX(1 * player.getSpeed());
 			}
-
+			
 			Platform.runLater(() -> {
 				playerImage.setImage(player.getMoveImage());
 			});
