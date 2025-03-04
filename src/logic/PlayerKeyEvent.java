@@ -4,24 +4,25 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import map.GameMap;
 import player.Direction;
 import player.Player;
 
 public class PlayerKeyEvent {
-	public static void addKeyEvent(Scene scene, ImageView playerImage) {
+	public static void addKeyEvent(Scene scene, ImageView playerImage, GameMap mapImage) {
 		scene.setOnKeyPressed(keyEvent -> {
 			Player player = Player.getInstance();
 			if (keyEvent.getCode() == KeyCode.W) {
-				player.updateMoveImage(Direction.UP);
+				player.updateMoveImage(Direction.UP, mapImage);
 				player.setVelY(-1 * player.getSpeed());
 			} else if (keyEvent.getCode() == KeyCode.A) {
-				player.updateMoveImage(Direction.LEFT);
+				player.updateMoveImage(Direction.LEFT, mapImage);
 				player.setVelX(-1 * player.getSpeed());
 			} else if (keyEvent.getCode() == KeyCode.S) {
-				player.updateMoveImage(Direction.DOWN);
+				player.updateMoveImage(Direction.DOWN, mapImage);
 				player.setVelY(1 * player.getSpeed());
 			} else if (keyEvent.getCode() == KeyCode.D) {
-				player.updateMoveImage(Direction.RIGHT);
+				player.updateMoveImage(Direction.RIGHT, mapImage);
 				player.setVelX(1 * player.getSpeed());
 			}
 			

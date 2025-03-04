@@ -11,6 +11,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import map.IScaleRoom;
 import player.Gender;
 import player.Player;
 import utils.ImageUtils;
@@ -26,10 +27,9 @@ public class CenterPane {
 		
 		playerPane.getChildren().add(playerImage);
 		playerPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
-
-		String mapPath = "map_image/room_iscale.png";
-		Image mapImage = new Image(ClassLoader.getSystemResource(mapPath).toString());
-		ImageView mapView = ImageUtils.createImageView(mapImage, 0, 0);
+		
+		ImageView mapView = new IScaleRoom();
+		Image mapImage = mapView.getImage();
 
 		Platform.runLater(() -> {
 			double ratio = mapImage.getHeight() / mapImage.getWidth();

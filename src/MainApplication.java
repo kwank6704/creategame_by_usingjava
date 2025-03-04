@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.PlayerKeyEvent;
+import map.GameMap;
 import player.Gender;
 import player.Player;
 
@@ -73,10 +74,13 @@ public class MainApplication extends Application {
 		gameSettingAddEvent(gamePane, primaryStage);
 		
 		StackPane centerPane = (StackPane) gamePane.getCenter();
+		
+		ImageView mapImage = (ImageView) centerPane.getChildren().get(0);
+		
 		Pane playerPane = (Pane) centerPane.getChildren().get(1);
 		ImageView playerImage = (ImageView) playerPane.getChildren().get(0);
 
-		PlayerKeyEvent.addKeyEvent(gameScene, playerImage);
+		PlayerKeyEvent.addKeyEvent(gameScene, playerImage, (GameMap) mapImage);
 		setupGameLoop(playerImage);
 		
 		primaryStage.setScene(gameScene);

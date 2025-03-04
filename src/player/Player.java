@@ -1,6 +1,7 @@
 package player;
 
 import javafx.scene.image.Image;
+import map.GameMap;
 
 public class Player {
 	private static Player playerInstance;
@@ -31,7 +32,7 @@ public class Player {
 		setMoveImage();
 	}
 
-	public void updateMoveImage(Direction newDirection) {
+	public void updateMoveImage(Direction newDirection, GameMap currMap) {
 		// Update player's position based on velocity
 		double newX = getX() + getVelX();
 		double newY = getY() + getVelY();
@@ -39,7 +40,7 @@ public class Player {
 		// Set new position
 		setX(newX);
 		setY(newY);
-		wall();
+		currMap.wall();
 
 		if (this.direction != newDirection)
 			setDirection(newDirection);
