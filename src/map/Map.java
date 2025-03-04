@@ -1,5 +1,5 @@
 package map;
 
 public class Map {
-	private String name;
+//	private String name;
 }
