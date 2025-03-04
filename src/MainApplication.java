@@ -30,7 +30,6 @@ public class MainApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-
 		// Build Start GUI
 		StackPane startPane = StartPane.build(primaryStage);
 		StackPane settingPane = SettingPane.build(primaryStage);

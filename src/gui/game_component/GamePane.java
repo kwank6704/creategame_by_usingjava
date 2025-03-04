@@ -2,6 +2,7 @@ package gui.game_component;
 
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import map.MapList;
 import player.Gender;
 
 public class GamePane {
@@ -11,7 +12,7 @@ public class GamePane {
 		root.setStyle("-fx-background-color: #D0C8C8;");
 		
 		root.setTop(TopPane.build(primaryStage));
-		root.setCenter(CenterPane.build(gender));
+		root.setCenter(CenterPane.build(gender, MapList.IScaleHall));
 		root.setLeft(LeftPane.build());
 		root.setRight(RightPane.build());
 		root.setBottom(ButtomPane.build());

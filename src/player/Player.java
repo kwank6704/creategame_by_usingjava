@@ -12,8 +12,8 @@ public class Player {
 	private int health;
 	private int energy;
 	private int speed;
-	private int posX = 300;
-	private int posY = 100;
+	private int posX;
+	private int posY;
 	private int velX = 0;
 	private int velY = 0;
 
@@ -31,6 +31,15 @@ public class Player {
 		setMoveImageNumber(1);
 		setMoveImage();
 	}
+	
+	public void updateMoveImage(Direction newDirection) {
+		if (this.direction != newDirection)
+			setDirection(newDirection);
+		else
+			move();
+
+		setMoveImage();
+	}
 
 	public void updateMoveImage(Direction newDirection, GameMap currMap) {
 		// Update player's position based on velocity
@@ -42,82 +51,11 @@ public class Player {
 		setY(newY);
 		currMap.wall();
 
-		if (this.direction != newDirection)
-			setDirection(newDirection);
-		else
-			move();
-
-		setMoveImage();
+		updateMoveImage(newDirection);
 	}
 
 	public void move() {
 		this.moveImageNumber = (float) (this.moveImageNumber >= 3 ? 1 : (this.moveImageNumber + 0.25));
-	}
-
-	public static int snap(int min, int max, int x) {
-		int mid = (min + max) / 2;
-		return (x < mid) ? min - 5 : max + 5;
-	}
-
-	public void block(int minX, int maxX, int minY, int maxY) {
-		if (posX >= minX && posX <= maxX && posY >= minY && posY <= maxY) {
-			if (velX != 0)
-				posX = snap(minX, maxX, posX);
-			if (velY != 0)
-				posY = snap(minY, maxY, posY);
-		}
-	}
-
-	public void wall() {
-//		wallHall();
-		wallIScale();
-//		wallElevator();
-	}
-
-	public void wallIScale() {
-		if (posY < 80)
-			posY = 80;
-		if (posY > 405)
-			posY = 405;
-		if (posX < 300)
-			posX = 300;
-		if (posX > 580)
-			posX = 580;
-
-		block(415, 540, 320, 405);
-	}
-
-	public void wallHall() {
-		if (posY <= 195)
-			posY = 195;
-		if (posY >= 360)
-			posY = 360;
-		if (posX < 65)
-			posX = 65;
-		if (posX > 900)
-			posX = 900;
-
-		block(280, 360, 295, 350);
-		block(115, 175, 195, 245);
-		block(45, 130, 215, 270);
-	}
-
-	public void wallElevator() {
-		if (posY <= 0)
-			posY = 0;
-		if (posY >= 330)
-			posY = 330;
-		if (posX < 255)
-			posX = 255;
-		if (posX > 630)
-			posX = 630;
-
-		block(250, 290, 0, 90);
-		block(505, 640, 260, 330);
-		block(275, 435, 0, 50);
-		block(465, 640, 0, 40);
-		block(440, 460, 0, 20);
-		block(440, 490, 325, 350);
 	}
 
 	public int getHealth() {
