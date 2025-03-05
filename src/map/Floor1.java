@@ -3,13 +3,13 @@ package map;
 import java.util.Arrays;
 import java.util.List;
 
-import gui.game_component.Actionable;
-import gui.game_component.CutsceneManager;
-import gui.game_component.EnablePlayerMoveAction;
-import gui.game_component.HideNPCAction;
-import gui.game_component.ShowDialogueAction;
-import gui.game_component.ShowNPCAction;
-import gui.game_component.TurnPlayerAction;
+import cutscene.Actionable;
+import cutscene.CutsceneManager;
+import cutscene.EnablePlayerMoveAction;
+import cutscene.HideNPCAction;
+import cutscene.ShowDialogueAction;
+import cutscene.ShowNPCAction;
+import cutscene.TurnPlayerAction;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +21,7 @@ import utils.ImageUtils;
 public class Floor1 extends GameMap {
 
 	public Floor1(Pane playerPane, ImageView playerImage) {
-		super("Build4Floor1", "map_image/floor1_database.png", new Integer[] { 30, 875, 90, 385 }, 2.7733);
+		super("Build4Floor1", "map_image/floor1.png", new Integer[] { 30, 875, 90, 385 }, 2.7733);
 
 		Player player = Player.getInstance();
 		player.setGameState(8);

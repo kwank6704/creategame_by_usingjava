@@ -1,4 +1,4 @@
-package gui.game_component.interact;
+package cutscene.interact;
 
 import map.MapList;
 
@@ -6,7 +6,7 @@ public enum NextRoomList {
 	IScaleRoom,
 	IScaleHall,
 	Elevator,
-	ToFloor1,
+	ToBuild4Hall,
 	ToComputerCenter,
 	OutComputerCenter,
 	ToDatabase,
@@ -25,8 +25,8 @@ public enum NextRoomList {
 		case Elevator: {
 			return "Do you want to use elevator?";
 		}
-		case ToFloor1: {
-			return "Do you want to go to Building 14 hall?";
+		case ToBuild4Hall: {
+			return "Do you want to go to Building 4 hall?";
 		}
 		case ToComputerCenter: {
 			return "Do you want to go to Computer Center?";
@@ -62,7 +62,7 @@ public enum NextRoomList {
 		case Elevator: {
 			return MapList.LAN_INTANIA;
 		}
-		case ToFloor1: {
+		case ToBuild4Hall: {
 			return MapList.BUILD_4_HALL;
 		}
 		case ToComputerCenter: {

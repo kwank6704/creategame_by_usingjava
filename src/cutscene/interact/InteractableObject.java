@@ -1,4 +1,4 @@
-package gui.game_component.interact;
+package cutscene.interact;
 
 import player.Player;
 

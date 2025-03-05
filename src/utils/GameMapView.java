@@ -16,7 +16,9 @@ import javafx.scene.paint.Color;
 import map.ComputerCenter;
 import map.Elevator;
 import map.Floor1;
+import map.Floor4;
 import map.GameMap;
+import map.GuildRoom;
 import map.IScaleHall;
 import map.IScaleRoom;
 import map.Lanintania;
@@ -47,13 +49,13 @@ public class GameMapView {
 			return new TA_Room(playerPane, playerImage);
 		}
 		case GUILD_ROOM: {
-			return new IScaleHall(playerPane, playerImage);
+			return new GuildRoom(playerPane, playerImage);
 		}
 		case FLOOR_1: {
 			return new Floor1(playerPane, playerImage);
 		}
 		case FLOOR_4: {
-			return new IScaleHall(playerPane, playerImage);
+			return new Floor4(playerPane, playerImage);
 		}
 		default:
 			return new IScaleRoom(playerPane, playerImage);

@@ -7,6 +7,7 @@ public class Archer extends Skill {
 	public boolean activate(Player player) {
 		player.changeHealth(1);
 		player.changeEnergy(1);
+		
 		return true;
 	}
 }

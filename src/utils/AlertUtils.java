@@ -1,7 +1,7 @@
 package utils;
 
+import cutscene.interact.NextRoomList;
 import gui.game_component.MainGamePane;
-import gui.game_component.interact.NextRoomList;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

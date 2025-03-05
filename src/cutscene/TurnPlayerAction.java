@@ -1,4 +1,4 @@
-package gui.game_component;
+package cutscene;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

@@ -9,6 +9,7 @@ public class Knight extends Skill {
 	public boolean activate(Player player) {
 		player.changeEnergy(2);
 		player.addPotion(new Potion(PotionList.SMALL_ENERGY));
+		
 		return true;
 	}
 }

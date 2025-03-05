@@ -3,42 +3,58 @@ package player;
 import java.util.ArrayList;
 
 import gui.game_component.RightPane;
-import gui.game_component.TopPane;
 import javafx.scene.image.Image;
 import map.GameMap;
 import potion.Potion;
 import potion.PotionList;
 import skill.GuildList;
 import skill.Skill;
-import skill.SkillsGuild;
+import skill.GuildUtils;
 
 public class Player {
 	private static Player playerInstance;
+
 	private Gender gender;
-	
+	public static final Gender defaultGender = Gender.MALE;
+
 	private Direction direction;
-	private float moveImageNumber;
+	public static final Direction defaultDirection = Direction.DOWN;
+
 	private Image moveImage;
-	
+	private double moveImageNumber;
+	public static final double MoveStep = 0.25;
+
 	private int posX;
 	private int posY;
 	private int velX = 0;
 	private int velY = 0;
-	
+
 	private int health;
 	private int energy;
 	private int speed;
-	
-	private ArrayList<GuildList> playerGuilds;
-	private ArrayList<Potion> playerPotions;
+	public static final int MaxHealth = 5;
+	public static final int MaxEnergy = 5;
+	public static final int MaxSpeed = 10;
+	public static final int MinHealth = 0;
+	public static final int MinEnergy = 0;
+	public static final int MinSpeed = 1;
+	public static final int DefaultSpeed = 5;
 
-	private boolean enableMove = true;
-	private int gameState = 0;
-	private boolean hasGoToDatabase = false;
-	private boolean hasGoToComCenter = false;
+	private ArrayList<GuildList> playerGuilds;
+	private static final int MaxGuilds = 3;
+	
+	private ArrayList<Potion> playerPotions;
+	private static final int MaxPotions = 5;
+
+	private static int gameState;
+	public static final int StartGameState = 0;
+
+	private static boolean enableMove = true;
+	private static boolean hasGoToDatabase = false;
+	private static boolean hasGoToComCenter = false;
 
 	public Player(Gender gender) {
-		this(gender, 5, 5, Direction.DOWN);
+		this(gender, MaxHealth, MaxEnergy, defaultDirection);
 	}
 
 	public Player(Gender gender, int health, int energy, Direction direction) {
@@ -47,20 +63,29 @@ public class Player {
 		this.health = health;
 		this.energy = energy;
 
-		setSpeed(5);
+		setSpeed(DefaultSpeed);
 		setDirection(direction);
 		setMoveImageNumber(1);
 		setMoveImage();
 
-		setGameState(0);
+		setGameState(StartGameState);
 
 		playerGuilds = new ArrayList<>();
 		playerGuilds.add(GuildList.HEALER);
 		playerGuilds.add(GuildList.MAGE);
 		playerGuilds.add(GuildList.NECROMANCER);
+
 		playerPotions = new ArrayList<Potion>();
 		playerPotions.add(new Potion(PotionList.LARGE_HEAL));
 		playerPotions.add(new Potion(PotionList.LARGE_ENERGY));
+	}
+
+	public static void buildPlayer(Gender gender) {
+		playerInstance = new Player(gender);
+	}
+
+	public void move() {
+		setMoveImageNumber(this.moveImageNumber > 3 ? 1 : (this.moveImageNumber + MoveStep));
 	}
 
 	public void updateMoveImage(Direction newDirection) {
@@ -74,20 +99,11 @@ public class Player {
 	}
 
 	public void updateMoveImage(Direction newDirection, GameMap currMap) {
-		// Update player's position based on velocity
-		double newX = getX() + getVelX();
-		double newY = getY() + getVelY();
+		setX(getX() + getVelX());		/* Update Player's X-position */
+		setY(getY() + getVelY());		/* Update Player's Y-position */
+		currMap.wall();					/* Initialized the Wall in the Current GameMap */
 
-		// Set new position
-		setX(newX);
-		setY(newY);
-		currMap.wall();
-		
-		updateMoveImage(newDirection);
-	}
-
-	public void move() {
-		this.moveImageNumber = (float) (this.moveImageNumber >= 3 ? 1 : (this.moveImageNumber + 0.25));
+		updateMoveImage(newDirection);	/* Update Player Image by Direction */
 	}
 
 	public void addGuild(GuildList guild) {
@@ -95,7 +111,7 @@ public class Player {
 	}
 
 	public boolean useSkill(GuildList guild) {
-		Skill activeSkill = SkillsGuild.getSkill(guild);
+		Skill activeSkill = GuildUtils.createGuild(guild);
 		if (activeSkill != null) {
 			return activeSkill.activate(this);
 		} else {
@@ -104,7 +120,7 @@ public class Player {
 	}
 
 	public boolean addPotion(Potion potion) {
-		if (playerPotions.size() < 5) {
+		if (playerPotions.size() < MaxPotions) {
 			playerPotions.add(potion);
 			RightPane.refreshUI(RightPane.getPotionInstance(), playerPotions);
 			return true;
@@ -130,49 +146,36 @@ public class Player {
 	}
 
 	public void changeSpeed(int i) {
-		setSpeed(speed + i);
+		setSpeed(getSpeed() + i);
 	}
 
 	public int getHealth() {
 		return health;
 	}
 
-	public void setHealth(int health) {
-		if (health < 0)
-			health = 0;
-		else if (health > 5)
-			health = 5;
-
-		TopPane.updateHealthBar(health, 5);
-
-		this.health = health;
-	}
-
 	public int getEnergy() {
 		return energy;
-	}
-
-	public void setEnergy(int energy) {
-		if (energy < 0)
-			energy = 0;
-		else if (energy > 5)
-			energy = 5;
-
-		TopPane.updateEnergyBar(energy, 5);
-
-		this.energy = energy;
 	}
 
 	public int getSpeed() {
 		return speed;
 	}
 
-	public void setSpeed(int speed) {
-		if (speed < 1)
-			speed = 1;
-		else if (speed > 10)
-			speed = 10;
+	public void setHealth(int health) {
+		health = health < MinHealth ? MinHealth : health;
+		health = health > MaxHealth ? MaxHealth : health;
+		this.health = health;
+	}
 
+	public void setEnergy(int energy) {
+		energy = energy < MinEnergy ? MinEnergy : energy;
+		energy = energy > MaxEnergy ? MaxEnergy : energy;
+		this.energy = energy;
+	}
+
+	public void setSpeed(int speed) {
+		speed = speed < MinSpeed ? MinSpeed : speed;
+		speed = speed > MaxSpeed ? MaxSpeed : speed;
 		this.speed = speed;
 	}
 
@@ -184,11 +187,11 @@ public class Player {
 		this.direction = direction;
 	}
 
-	public float getMoveImageNumber() {
+	public double getMoveImageNumber() {
 		return moveImageNumber;
 	}
 
-	public void setMoveImageNumber(float moveImageNumber) {
+	public void setMoveImageNumber(double moveImageNumber) {
 		this.moveImageNumber = moveImageNumber;
 	}
 
@@ -254,7 +257,7 @@ public class Player {
 	}
 
 	public void setEnableMove(Boolean enableMove) {
-		this.enableMove = enableMove;
+		Player.enableMove = enableMove;
 	}
 
 	public int getGameState() {
@@ -262,7 +265,7 @@ public class Player {
 	}
 
 	public void setGameState(int gameState) {
-		this.gameState = gameState;
+		Player.gameState = gameState;
 	}
 
 	public Boolean getHasGoToDatabase() {
@@ -270,26 +273,21 @@ public class Player {
 	}
 
 	public void setHasGoToDatabase(Boolean hasGoToDatabase) {
-		this.hasGoToDatabase = hasGoToDatabase;
+		Player.hasGoToDatabase = hasGoToDatabase;
 	}
-	
+
 	public Boolean getHasGoToComCenter() {
 		return hasGoToComCenter;
 	}
 
 	public void setHasGoToComCenter(Boolean hasGoToComCenter) {
-		this.hasGoToComCenter = hasGoToComCenter;
+		Player.hasGoToComCenter = hasGoToComCenter;
 	}
 
 	public static Player getInstance() {
-		if (playerInstance == null) {
-			playerInstance = new Player(Gender.MALE);
-		}
+		if (playerInstance == null)
+			playerInstance = new Player(defaultGender);
+
 		return playerInstance;
 	}
-
-	public static void buildPlayer(Gender gender) {
-		playerInstance = new Player(gender);
-	}
-
 }

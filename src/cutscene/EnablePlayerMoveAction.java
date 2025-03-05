@@ -1,5 +1,6 @@
-package gui.game_component;
+package cutscene;
 
+import gui.game_component.ButtomPane;
 import player.Player;
 
 public class EnablePlayerMoveAction implements Actionable  {

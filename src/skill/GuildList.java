@@ -1,12 +1,5 @@
 package skill;
 
 public enum GuildList {
-    EXPLORER,
-    HEALER,
-    ALCHEMIST,
-    MAGE,
-    HUNTER,
-    NECROMANCER,
-    KNIGHT,
-    ARCHER
+	EXPLORER, HEALER, ALCHEMIST, MAGE, HUNTER, NECROMANCER, KNIGHT, ARCHER;
 }

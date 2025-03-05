@@ -3,11 +3,11 @@ package logic;
 import java.util.Arrays;
 import java.util.List;
 
-import gui.game_component.interact.EasterEgg;
-import gui.game_component.interact.InteractableObject;
-import gui.game_component.interact.MinigameEntry;
-import gui.game_component.interact.NextRoomEntry;
-import gui.game_component.interact.WithdrawEntry;
+import cutscene.interact.EasterEgg;
+import cutscene.interact.InteractableObject;
+import cutscene.interact.MinigameEntry;
+import cutscene.interact.NextRoomEntry;
+import cutscene.interact.WithdrawEntry;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -27,7 +27,7 @@ public class PlayerKeyEvent {
 				new NextRoomEntry(315, 310, 5, "toLangear"),
 				new MinigameEntry(205, 230, 6, "LangearMinigame"), 
 				new MinigameEntry(155, 180, 6, "LangearMinigame"),
-				new NextRoomEntry(25, -45, 7, "toFloor1"),
+				new NextRoomEntry(25, -45, 7, "toBuild4Hall"),
 				new NextRoomEntry(870, -45, 7, "toComputerCenter"),
 				new MinigameEntry(530, 40, 7, "ComCenMinigame"), 
 				new NextRoomEntry(260, 420, 7, "outComputerCenter"),

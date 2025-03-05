@@ -1,4 +1,4 @@
-package gui.game_component.interact;
+package cutscene.interact;
 
 import javafx.application.Platform;
 import player.Player;
@@ -31,8 +31,8 @@ public class NextRoomEntry extends InteractableObject {
 			}
 			case 7: {
 				String name = this.getName();
-				if (name.equals("toFloor1")) {
-					AlertUtils.setNextRoomAlert(NextRoomList.ToFloor1);
+				if (name.equals("toBuild4Hall")) {
+					AlertUtils.setNextRoomAlert(NextRoomList.ToBuild4Hall);
 				} else if (name.equals("toComputerCenter")) {
 					AlertUtils.setNextRoomAlert(NextRoomList.ToComputerCenter);
 				} else if (name.equals("outComputerCenter")) {
@@ -51,7 +51,7 @@ public class NextRoomEntry extends InteractableObject {
 				if (name.equals("toGuild")) {
 					AlertUtils.setNextRoomAlert(NextRoomList.ToGuild);
 				} else if (this.getName().equals("toHall")) {
-					AlertUtils.setNextRoomAlert(NextRoomList.ToFloor1);
+					AlertUtils.setNextRoomAlert(NextRoomList.ToBuild4Hall);
 				}
 				break;
 			}

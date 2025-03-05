@@ -1,4 +1,4 @@
-package gui.game_component;
+package cutscene;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import gui.game_component.ButtomPane;
 import javafx.application.Platform;
 
 public class CutsceneManager {

@@ -3,10 +3,10 @@ package map;
 import java.util.Arrays;
 import java.util.List;
 
-import gui.game_component.Actionable;
-import gui.game_component.CutsceneManager;
-import gui.game_component.EnablePlayerMoveAction;
-import gui.game_component.ShowDialogueAction;
+import cutscene.Actionable;
+import cutscene.CutsceneManager;
+import cutscene.EnablePlayerMoveAction;
+import cutscene.ShowDialogueAction;
 import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;

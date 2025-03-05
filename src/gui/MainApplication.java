@@ -1,6 +1,4 @@
-import gui.GenderSelectionPane;
-import gui.SettingPane;
-import gui.StartPane;
+package gui;
 import gui.game_component.MainGamePane;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;

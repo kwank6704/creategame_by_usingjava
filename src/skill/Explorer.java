@@ -11,7 +11,7 @@ import potion.PotionList;
 public class Explorer extends Skill {
 	@Override
 	public boolean activate(Player player) {
-		player.setSpeed(5);
+		player.setSpeed(Player.DefaultSpeed);
 
 		List<Potion> potions = Arrays.asList(new Potion[] {
 				new Potion(PotionList.INCREASE_SPEED),
@@ -19,6 +19,6 @@ public class Explorer extends Skill {
 		});
 		Collections.shuffle(potions);
 
-		return player.addPotion(potions.get(0)) ||  player.addPotion(potions.get(1));
+		return player.addPotion(potions.get(0)) || player.addPotion(potions.get(1));
 	}
 }

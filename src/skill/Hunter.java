@@ -9,6 +9,7 @@ public class Hunter extends Skill {
 	public boolean activate(Player player) {
 		player.changeSpeed(2);
 		player.addPotion(new Potion(PotionList.INCREASE_SPEED));
+		
 		return true;
 	}
 }

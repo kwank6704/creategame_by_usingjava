@@ -9,6 +9,7 @@ public class Healer extends Skill {
 	public boolean activate(Player player) {
 		player.changeHealth(2);
 		player.addPotion(new Potion(PotionList.SMALL_HEAL));
+		
 		return true;
 	}
 }

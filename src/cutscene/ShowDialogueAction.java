@@ -1,4 +1,6 @@
-package gui.game_component;
+package cutscene;
+
+import gui.game_component.ButtomPane;
 
 //import javafx.application.Platform;
 //import javafx.scene.Scene;
