@@ -32,9 +32,10 @@ public class Player {
 	private ArrayList<GuildList> playerGuilds;
 	private ArrayList<Potion> playerPotions;
 
-	private Boolean enableMove = true;
+	private boolean enableMove = true;
 	private int gameState = 0;
-	private Boolean hasGoToDatabase = false;
+	private boolean hasGoToDatabase = false;
+	private boolean hasGoToComCenter = false;
 
 	public Player(Gender gender) {
 		this(gender, 5, 5, Direction.DOWN);
@@ -82,8 +83,6 @@ public class Player {
 		setY(newY);
 		currMap.wall();
 		
-//		System.out.println("X: " + posX + " | Y: " + posY);
-
 		updateMoveImage(newDirection);
 	}
 
@@ -272,6 +271,14 @@ public class Player {
 
 	public void setHasGoToDatabase(Boolean hasGoToDatabase) {
 		this.hasGoToDatabase = hasGoToDatabase;
+	}
+	
+	public Boolean getHasGoToComCenter() {
+		return hasGoToComCenter;
+	}
+
+	public void setHasGoToComCenter(Boolean hasGoToComCenter) {
+		this.hasGoToComCenter = hasGoToComCenter;
 	}
 
 	public static Player getInstance() {

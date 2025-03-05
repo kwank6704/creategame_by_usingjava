@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import map.ComputerCenter;
 import map.Elevator;
 import map.Floor1;
+import map.GameMap;
 import map.IScaleHall;
 import map.IScaleRoom;
 import map.Lanintania;
@@ -72,23 +73,13 @@ public class GameMapView {
 	
 	public static StackPane gameMapCreate(MapList currMap, Pane playerPane, ImageView playerImage) {
 		StackPane gamePane = new StackPane();
-		
 		ImageView mapView = getMapView(currMap, playerPane, playerImage);
-		Image mapImage = mapView.getImage();
+		Image player = playerImage.getImage();
 		
 		Platform.runLater(() -> {
-			double ratio = mapImage.getHeight() / mapImage.getWidth();
-			double scale = Math.min(gamePane.getHeight(), gamePane.getWidth() * ratio) / mapImage.getHeight();
-			mapView.setFitHeight(scale * mapImage.getHeight());
-			mapView.setFitWidth(scale * mapImage.getWidth());
-			
-			System.out.println("Ratio: " + Double.toString(ratio));
-			System.out.println("Scale: " + Double.toString(scale));
-			System.out.println("Pane Height: " + Double.toString(gamePane.getHeight()));
-			System.out.println("Pane Width: " + Double.toString(gamePane.getWidth()));
-			          
-			playerImage.setFitHeight(scale * playerImage.getFitHeight() / 2);
-			playerImage.setFitWidth(scale * playerImage.getFitWidth() / 2);
+			double ratio = ((GameMap) mapView).getRatio();
+			playerImage.setFitHeight(ratio * player.getHeight());
+			playerImage.setFitWidth(ratio * player.getWidth());
 		});
 
 		gamePane.getChildren().addAll(mapView, playerPane);
@@ -103,6 +94,9 @@ public class GameMapView {
 		StackPane gamePane = (StackPane) mainGamePane.getCenter();
 		Pane playerPane = (Pane) gamePane.getChildren().get(1);
 		ImageView playerImage = (ImageView) playerPane.getChildren().get(0);
+		
+		playerPane = new Pane();
+		playerPane.getChildren().add(playerImage);
 		
 		gamePane = gameMapCreate(currMap, playerPane, playerImage);		
 		return gamePane;

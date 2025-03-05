@@ -23,7 +23,7 @@ public class ButtomPane {
 		
 		HBox dialogueBox = new HBox(dialogueText);
 		dialogueBox.setAlignment(Pos.CENTER);
-		dialogueBox.setPrefSize(720, 60);
+		dialogueBox.setPrefSize(1200, 60);
 		dialogueBox.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
 		dialogueBox.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(5), Insets.EMPTY)));
 		

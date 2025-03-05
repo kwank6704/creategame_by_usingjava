@@ -8,12 +8,15 @@ public abstract class GameMap extends ImageView {
 	protected String name;
 	protected String mapPath;
 	protected Integer[] boundary;
+	protected double ratio;
 
 	public GameMap(String name, String mapPath, Integer[] boundary, double ratio) {
 		super(new Image(mapPath));
 		this.name = name;
 		this.mapPath = mapPath;
 		this.boundary = boundary;
+		
+		this.ratio = ratio;
 		
 		this.setFitHeight(ratio * this.getImage().getHeight());
 		this.setFitWidth(ratio * this.getImage().getWidth());
@@ -61,4 +64,8 @@ public abstract class GameMap extends ImageView {
 	}
 	
 	public abstract void wall();
+	
+	public double getRatio() {
+		return ratio;
+	}
 }

@@ -3,7 +3,7 @@ package potion;
 import java.util.Random;
 import player.Player;
 
-public class Potion {
+public class Potion implements PotionEffect {
 	private PotionList type;
 	private int potency;
 
@@ -79,6 +79,7 @@ public class Potion {
 		return "Potion{" + "type = " + type + ", potency = " + potency + "}";
 	}
 
+	@Override
 	public void applyEffect(Player player) {
 		switch (type) {
 			case SMALL_HEAL:

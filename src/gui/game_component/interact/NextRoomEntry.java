@@ -43,7 +43,6 @@ public class NextRoomEntry extends InteractableObject {
 			case 8: {
 				AlertUtils.setNextRoomAlert(NextRoomList.ToDatabase);
 				player.setGameState(10);
-				player.setHasGoToDatabase(true);
 				System.out.println("not cheated");
 				break;
 			}
@@ -55,6 +54,9 @@ public class NextRoomEntry extends InteractableObject {
 					AlertUtils.setNextRoomAlert(NextRoomList.ToFloor1);
 				}
 				break;
+			}
+			case 12: {
+				AlertUtils.setNextRoomAlert(NextRoomList.ToFloor4);
 			}
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + gameState);

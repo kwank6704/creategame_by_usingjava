@@ -11,7 +11,8 @@ public enum NextRoomList {
 	OutComputerCenter,
 	ToDatabase,
 	ToGuild,
-	ToGuildCheated;
+	ToGuildCheated,
+	ToFloor4;
 	
 	public String getConfirmationText() {
 		switch (this) {
@@ -41,6 +42,9 @@ public enum NextRoomList {
 		}
 		case ToGuildCheated: {
 			return "You think I don't know you cheated, don't you?";
+		}
+		case ToFloor4: {
+			return "Are you Ready to fight the boss?";
 		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + this);

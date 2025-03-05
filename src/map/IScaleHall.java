@@ -6,12 +6,9 @@ import javafx.scene.layout.Pane;
 import player.Direction;
 import player.Player;
 
-public class IScaleHall extends GameMap {
-	public static IScaleHall iScaleHall;
-	public static final double RATIO = 1.968;
-	
+public class IScaleHall extends GameMap {	
 	public IScaleHall(Pane playerPane, ImageView playerImage) {
-		super("iScale Hall", "map_image/iscale_hall.png", new Integer[] {70, 860, 180, 335}, RATIO);
+		super("iScale Hall", "map_image/iscale_hall.png", new Integer[] {70, 860, 180, 335}, 2.7733);
 		
 		Player player = Player.getInstance();
 		player.setGameState(3);
@@ -39,9 +36,5 @@ public class IScaleHall extends GameMap {
 		block(805, 860, 320, 335);
 		block(255, 345, 255, 335);
 		block(240, 345, 275, 335);
-	}
-	
-	public static IScaleHall getInstance() {
-		return iScaleHall;
 	}
 }

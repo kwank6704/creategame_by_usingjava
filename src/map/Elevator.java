@@ -19,15 +19,10 @@ import player.Player;
 import utils.ImageUtils;
 
 public class Elevator extends GameMap {
-	public static Elevator elevator;
-
 	public Elevator(Pane playerPane, ImageView playerImage) {
-		super("Elevator", "map_image/elevator.png", new Integer[] { 240, 630, 20, 290 });
+		super("Elevator", "map_image/elevator.png", new Integer[] { 240, 630, 20, 290 }, 2.7733);
 
 		Player player = Player.getInstance();
-
-		Image gandamImage = new Image("npc/pee_chai_yai.png");
-		ImageView npcImage = ImageUtils.createImageView(gandamImage, 128, 128);
 		player.setX(260);
 		player.setY(170);
 
@@ -35,38 +30,46 @@ public class Elevator extends GameMap {
 			player.updateMoveImage(Direction.RIGHT);
 			playerImage.setImage(player.getMoveImage());
 		});
+		
+		Image npcImage = new Image("npc/pee_chai_yai.png");
+		ImageView npcImageView = ImageUtils.createImageView(npcImage, 128, 128);
 
 		player.setEnableMove(false);
 		List<Actionable> actionables = Arrays.asList(
-				new EnablePlayerMoveAction(false),
+			new ShowNPCAction(playerPane, npcImageView, 600, 200),
 
-				new ShowNPCAction(playerPane, npcImage, 600, 200),
+			new ShowDialogueAction("Player: TA.Big bro!"),
+			
+			new ShowDialogueAction("TA.Big bro: So you passed the comprog quest."),
+			
+			new ShowDialogueAction("Player: Yes. Are you stuck here too?"),
+			
+			new ShowDialogueAction("TA.Big bro: Not quite. Not in the same way as you."),
+			
+			new ShowDialogueAction("Player: So. Do you know where I should go?"),
+			
+			new ShowDialogueAction("TA.Big bro: You must go down by this elevator."),
+			new ShowDialogueAction("TA.Big bro: But since it’s old and we don’t have money to fix it"),
+			new ShowDialogueAction("TA.Big bro: because the insurance does not cover the crack of dimension."),
+			new ShowDialogueAction("TA.Big bro: We have to fix it per use."),
+			
+			new ShowDialogueAction("Player: OK. I will go by stairs then."),
+			new TurnPlayerAction(player, Direction.UP, playerImage),
+			
+			new ShowDialogueAction("TA.Big bro: It’s not recommended. Those croissants on the stairs are poisoned."),
+			
+			new TurnPlayerAction(player, Direction.RIGHT, playerImage),
+			new ShowDialogueAction("Player: So this is the main quest."),
+			
+			new ShowDialogueAction("TA.Big bro: You could call that."),
+			
+			new ShowDialogueAction("Player: What’s it about now?"),
+			
+			new HideNPCAction(npcImageView),
+			
+			new ShowDialogueAction("Player: Should not have asked."),
 
-				new ShowDialogueAction("Player: TA.Big bro!"),
-				new ShowDialogueAction("TA.Big bro: So you passed the comprog quest."),
-				new ShowDialogueAction("Player: Yes. Are you stuck here too?"),
-				new ShowDialogueAction("TA.Big bro: Not quite. Not in the same way as you."),
-				new ShowDialogueAction("Player: So. Do you know where I should go?"),
-				new ShowDialogueAction("TA.Big bro: You must go down by this elevator."),
-				new ShowDialogueAction("TA.Big bro: But since it’s old and we don’t have money to fix it"),
-				new ShowDialogueAction("TA.Big bro: because the insurance does not cover the crack of dimension."),
-				new ShowDialogueAction("TA.Big bro: We have to fix it per use."),
-				
-				new ShowDialogueAction("Player: OK. I will go by stairs then."),
-				new TurnPlayerAction(player, Direction.UP, playerImage),
-				
-				new ShowDialogueAction("TA.Big bro: It’s not recommended. Those croissants on the stairs are poisoned."),
-				
-				new TurnPlayerAction(player, Direction.RIGHT, playerImage),
-				new ShowDialogueAction("Player: So this is the main quest."),
-				new ShowDialogueAction("TA.Big bro: You could call that."),
-				new ShowDialogueAction("Player: What’s it about now?"),
-				
-				new HideNPCAction(npcImage),
-				
-				new ShowDialogueAction("Player: Should not have asked."),
-
-				new EnablePlayerMoveAction(true)
+			new EnablePlayerMoveAction(true)
 		);
 		
 		Platform.runLater(() -> {
