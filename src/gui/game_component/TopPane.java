@@ -3,21 +3,25 @@ package gui.game_component;
 import gui.SettingButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import utils.ImageUtils;
+import player.Player;
+import utils.StatusBarUtils;
 
 public class TopPane {
+	private static String directoryPath = "subelement_image/status/";
+
+	private static String healthPath = directoryPath + "healthIcon.png";
+	private static String energyPath = directoryPath + "energyIcon.png";
+
+	private static String emptyHealthPath = directoryPath + "healthIcon-black.png";
+	private static String emptyEnergyPath = directoryPath + "energyIcon-black.png";
+
+	private static GridPane healthPane;
+	private static GridPane energyPane;
+
 	public static BorderPane build(Stage primaryStage) {
 		BorderPane topPane = new BorderPane();
 		topPane.setPadding(new Insets(15));
@@ -27,36 +31,37 @@ public class TopPane {
 	}
 
 	private static VBox setupStatusPane() {
+		Player player = Player.getInstance();
+
 		VBox statusPane = new VBox(5);
 		statusPane.setAlignment(Pos.CENTER);
 		statusPane.setPadding(new Insets(0, 0, 15, 0));
-		statusPane.getChildren().addAll(setupHealthPane(), setupEnergyPane());
+		statusPane.getChildren().addAll(setupHealthPane(player), setupEnergyPane(player));
+
 		return statusPane;
 	}
 
-	private static GridPane setupHealthPane() {
-		GridPane healthPane = createStatusBar(220, 32, "subelement_image/healthIcon.png", 5);
+	private static GridPane setupHealthPane(Player player) {
+		int playerHealth = player.getHealth();
+		int maxHealth = 5;
+
+		healthPane = StatusBarUtils.createStatusBar(220, 32, healthPath, emptyHealthPath, playerHealth, maxHealth);
 		return healthPane;
 	}
 
-	private static GridPane setupEnergyPane() {
-		GridPane energyPane = createStatusBar(180, 24, "subelement_image/energyIcon.png", 5);
+	private static GridPane setupEnergyPane(Player player) {
+		int playerEnergy = player.getEnergy();
+		int maxEnergy = 5;
+
+		energyPane = StatusBarUtils.createStatusBar(180, 24, energyPath, emptyEnergyPath, playerEnergy, maxEnergy);
 		return energyPane;
 	}
-
-	private static GridPane createStatusBar(int width, int iconSize, String imagePath, int count) {
-		GridPane pane = new GridPane();
-		pane.setHgap(10);
-		pane.setPrefWidth(width);
-		pane.setPadding(new Insets(0, 10, 0, 10));
-		pane.setAlignment(Pos.CENTER);
-		pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), Insets.EMPTY)));
-		pane.setBorder(new Border(
-				new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
-
-		for (int i = 0; i < count; i++) {
-			pane.add(ImageUtils.createImageView(imagePath, iconSize, iconSize), i, 0);
-		}
-		return pane;
+	
+	public static void updateHealthBar(int playerHealth, int maxHealth) {
+		StatusBarUtils.updateStatusBar(healthPane, healthPath, emptyHealthPath, playerHealth, maxHealth);
+	}
+	
+	public static void updateEnergyBar(int playerEnergy, int maxEnergy) {
+		StatusBarUtils.updateStatusBar(energyPane, energyPath, emptyEnergyPath, playerEnergy, maxEnergy);
 	}
 }

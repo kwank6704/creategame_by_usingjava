@@ -6,11 +6,11 @@ public class IScaleHall extends GameMap {
 	public static IScaleHall iScaleHall;
 	
 	public IScaleHall() {
-		super("iScale Hall", "map_image/iscale.png", new Integer[] {65, 900, 195, 360});
+		super("iScale Hall", "map_image/iscale_hall.png", new Integer[] {70, 860, 180, 310});
 		
 		Player player = Player.getInstance();
-		player.setX(240);
-		player.setY(200);
+		player.setX(225);
+		player.setY(180);
 	}
 	
 	@Override
@@ -21,9 +21,9 @@ public class IScaleHall extends GameMap {
 		player.setX(position[0]);
 		player.setY(position[1]);
 		
-		block(280, 360, 295, 350);
-		block(115, 175, 195, 245);
-		block(45, 130, 215, 270);
+		block(90, 190, 180, 225);
+		block(70, 100, 180, 265);
+		block(240, 350, 250, 305);
 	}
 	
 	public static IScaleHall getInstance() {

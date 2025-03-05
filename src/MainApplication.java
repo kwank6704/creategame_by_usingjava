@@ -140,6 +140,10 @@ public class MainApplication extends Application {
 			primaryStage.setScene(settingScene);
 		});
 	}
+	
+	public static BorderPane getGamePaneInstance() {
+		return gamePane;
+	}
 
 	public static void main(String[] args) {
 		launch(args);

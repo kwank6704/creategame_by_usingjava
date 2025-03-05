@@ -6,7 +6,7 @@ public class IScaleRoom extends GameMap {
 	public static IScaleRoom iScaleRoom;
 	
 	public IScaleRoom() {
-		super("iScale Room", "map_image/room_iscale.png", new Integer[] {300, 580, 80, 405});
+		super("iScale Room", "map_image/iscale_room.png", new Integer[] {300, 580, 80, 405});
 		
 		Player player = Player.getInstance();
 		player.setX(300);
@@ -21,7 +21,8 @@ public class IScaleRoom extends GameMap {
 		player.setX(position[0]);
 		player.setY(position[1]);
 		
-		block(415, 540, 320, 405);
+		block(415, 530, 335, 405);
+		block(415, 480, 320, 405);
 	}
 	
 	public static IScaleRoom getInstance() {

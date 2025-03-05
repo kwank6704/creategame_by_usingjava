@@ -6,17 +6,24 @@ import map.MapList;
 import player.Gender;
 
 public class GamePane {
+	private static BorderPane gamePane;
+	
 	public static BorderPane build(Stage primaryStage, Gender gender) {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(1440, 720);
 		root.setStyle("-fx-background-color: #D0C8C8;");
 		
 		root.setTop(TopPane.build(primaryStage));
-		root.setCenter(CenterPane.build(gender, MapList.IScaleHall));
+		root.setCenter(CenterPane.build(gender, MapList.IScaleRoom));
 		root.setLeft(LeftPane.build());
 		root.setRight(RightPane.build());
 		root.setBottom(ButtomPane.build());
 
+		gamePane = root;
 		return root;
+	}
+	
+	public static BorderPane getInstance() {
+		return gamePane;
 	}
 }

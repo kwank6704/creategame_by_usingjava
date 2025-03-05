@@ -9,11 +9,11 @@ public class Elevator extends GameMap {
 	public static Elevator elevator;
 	
 	public Elevator(ImageView playerImage) {
-		super("Elevator", "map_image/elevator.png", new Integer[] {255, 630, 0, 330});
+		super("Elevator", "map_image/elevator.png", new Integer[] {240, 630, 20, 290});
 		
 		Player player = Player.getInstance();
-		player.setX(260);
-		player.setY(170);
+		player.setX(240);
+		player.setY(140);
 		
 		Platform.runLater(() -> {
 			player.updateMoveImage(Direction.RIGHT);
@@ -29,12 +29,9 @@ public class Elevator extends GameMap {
 		player.setX(position[0]);
 		player.setY(position[1]);
 		
-		block(250, 290, 0, 90);
-		block(505, 640, 260, 330);
-		block(275, 435, 0, 50);
-		block(465, 640, 0, 40);
-		block(440, 460, 0, 20);
-		block(440, 490, 325, 350);
+		block(240, 280, 20, 70);
+		block(460, 620, 230, 290);
+		block(530, 600, 225, 230);
 	}
 
 }

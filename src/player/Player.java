@@ -1,7 +1,16 @@
 package player;
 
+import java.util.ArrayList;
+
+import gui.game_component.RightPane;
+import gui.game_component.TopPane;
 import javafx.scene.image.Image;
 import map.GameMap;
+import potion.Potion;
+import potion.PotionList;
+import skill.GuildList;
+import skill.Skill;
+import skill.SkillsGuild;
 
 public class Player {
 	private static Player playerInstance;
@@ -16,27 +25,39 @@ public class Player {
 	private int posY;
 	private int velX = 0;
 	private int velY = 0;
+	private ArrayList<GuildList> playerGuilds;
+	private ArrayList<Potion> playerPotions;
 
 	public Player(Gender gender) {
-		this(gender, 5, 5, Direction.DOWN);
+		this(gender, 3, 3, Direction.DOWN);
 	}
 
 	public Player(Gender gender, int health, int energy, Direction direction) {
 		super();
 		this.gender = gender;
-		setHealth(health);
-		setEnergy(energy);
+		this.health = health;
+		this.energy = energy;
+		
 		setSpeed(5);
 		setDirection(direction);
 		setMoveImageNumber(1);
 		setMoveImage();
+
+		playerGuilds = new ArrayList<>();
+		playerGuilds.add(GuildList.HEALER);
+		playerGuilds.add(GuildList.MAGE);
+		playerGuilds.add(GuildList.NECROMANCER);
+		playerPotions = new ArrayList<Potion>();
+		playerPotions.add(new Potion(PotionList.LARGE_HEAL));
+		playerPotions.add(new Potion(PotionList.LARGE_ENERGY));
 	}
-	
+
 	public void updateMoveImage(Direction newDirection) {
-		if (this.direction != newDirection)
-			setDirection(newDirection);
-		else
-			move();
+		if (this.direction != newDirection) {
+			setDirection(newDirection);			
+		} else {
+			move();			
+		}
 
 		setMoveImage();
 	}
@@ -58,6 +79,49 @@ public class Player {
 		this.moveImageNumber = (float) (this.moveImageNumber >= 3 ? 1 : (this.moveImageNumber + 0.25));
 	}
 
+	public void addGuild(GuildList guild) {
+		playerGuilds.add(guild);
+	}
+
+	public boolean useSkill(GuildList guild) {
+		Skill activeSkill = SkillsGuild.getSkill(guild);
+		if (activeSkill != null) {
+			return activeSkill.activate(this);
+		} else {
+			return false;
+		}
+	}
+
+	public boolean addPotion(Potion potion) {
+		if (playerPotions.size() < 5) {
+			playerPotions.add(potion);
+			RightPane.refreshUI(RightPane.getPotionInstance(), playerPotions);
+			return true;
+		}
+		
+		return false;
+	}
+
+	public void usePotion(int index) {
+		if (index >= 0 && index < playerPotions.size()) {
+			Potion potion = playerPotions.get(index);
+			potion.applyEffect(this);
+			playerPotions.remove(index);
+		}
+	}
+	
+	public void changeHealth(int i) {
+		setHealth(getHealth() + i);
+	}
+
+	public void changeEnergy(int i) {
+		setEnergy(getEnergy() + i);
+	}
+
+	public void changeSpeed(int i) {
+		setSpeed(speed + i);
+	}
+
 	public int getHealth() {
 		return health;
 	}
@@ -68,6 +132,8 @@ public class Player {
 		else if (health > 5)
 			health = 5;
 
+		TopPane.updateHealthBar(health, 5);
+		
 		this.health = health;
 	}
 
@@ -80,6 +146,8 @@ public class Player {
 			energy = 0;
 		else if (energy > 5)
 			energy = 5;
+		
+		TopPane.updateEnergyBar(energy, 5);
 
 		this.energy = energy;
 	}
@@ -158,6 +226,14 @@ public class Player {
 
 	public void setVelY(int velY) {
 		this.velY = velY;
+	}
+
+	public ArrayList<GuildList> getGuilds() {
+		return playerGuilds;
+	}
+
+	public ArrayList<Potion> getPotions() {
+		return playerPotions;
 	}
 
 	public static Player getInstance() {
