@@ -15,8 +15,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class ButtomPane {
-	public static HBox build() {
-		Text dialogueText = new Text("Player: Did I fall asleep? What time is it?");
+	private static Text dialogueText = new Text("");
+
+	public static HBox build() {	
 		dialogueText.setFill(Color.WHITE);
 		dialogueText.setFont(Font.font("PixelFont", 20));
 		
@@ -31,5 +32,14 @@ public class ButtomPane {
 		dialoguePane.setAlignment(Pos.CENTER);
 		
 		return dialoguePane;
+	}
+	
+	public static void setDialogue(String newDialogue) {
+		// Ensure dialogueText exists
+	    if (dialogueText != null) {
+	        dialogueText.setText(newDialogue);
+	    } else {
+	        System.out.println("Error: dialogueText is not initialized yet!");
+	    }
 	}
 }

@@ -9,11 +9,14 @@ public abstract class GameMap extends ImageView {
 	protected String mapPath;
 	protected Integer[] boundary;
 
-	public GameMap(String name, String mapPath, Integer[] boundary) {
+	public GameMap(String name, String mapPath, Integer[] boundary, double ratio) {
 		super(new Image(mapPath));
 		this.name = name;
 		this.mapPath = mapPath;
 		this.boundary = boundary;
+		
+		this.setFitHeight(ratio * this.getImage().getHeight());
+		this.setFitWidth(ratio * this.getImage().getWidth());
 	}
 
 	public static int snap(int min, int max, int x) {

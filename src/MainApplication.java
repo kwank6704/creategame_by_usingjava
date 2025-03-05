@@ -1,7 +1,7 @@
 import gui.GenderSelectionPane;
 import gui.SettingPane;
 import gui.StartPane;
-import gui.game_component.GamePane;
+import gui.game_component.MainGamePane;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -67,7 +67,7 @@ public class MainApplication extends Application {
 	}
 
 	private void gamePaneSetup(Stage primaryStage, Gender gender) {
-		gamePane = GamePane.build(primaryStage, gender);
+		gamePane = MainGamePane.build(primaryStage, gender);
 		gameScene = new Scene(gamePane);
 
 		gameSettingAddEvent(gamePane, primaryStage);
@@ -139,10 +139,6 @@ public class MainApplication extends Application {
 			prevScene = primaryStage.getScene();
 			primaryStage.setScene(settingScene);
 		});
-	}
-	
-	public static BorderPane getGamePaneInstance() {
-		return gamePane;
 	}
 
 	public static void main(String[] args) {

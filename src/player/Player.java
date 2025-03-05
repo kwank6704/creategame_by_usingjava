@@ -15,21 +15,29 @@ import skill.SkillsGuild;
 public class Player {
 	private static Player playerInstance;
 	private Gender gender;
+	
 	private Direction direction;
 	private float moveImageNumber;
 	private Image moveImage;
-	private int health;
-	private int energy;
-	private int speed;
+	
 	private int posX;
 	private int posY;
 	private int velX = 0;
 	private int velY = 0;
+	
+	private int health;
+	private int energy;
+	private int speed;
+	
 	private ArrayList<GuildList> playerGuilds;
 	private ArrayList<Potion> playerPotions;
 
+	private Boolean enableMove = true;
+	private int gameState = 0;
+	private Boolean hasGoToDatabase = false;
+
 	public Player(Gender gender) {
-		this(gender, 3, 3, Direction.DOWN);
+		this(gender, 5, 5, Direction.DOWN);
 	}
 
 	public Player(Gender gender, int health, int energy, Direction direction) {
@@ -37,11 +45,13 @@ public class Player {
 		this.gender = gender;
 		this.health = health;
 		this.energy = energy;
-		
+
 		setSpeed(5);
 		setDirection(direction);
 		setMoveImageNumber(1);
 		setMoveImage();
+
+		setGameState(0);
 
 		playerGuilds = new ArrayList<>();
 		playerGuilds.add(GuildList.HEALER);
@@ -54,9 +64,9 @@ public class Player {
 
 	public void updateMoveImage(Direction newDirection) {
 		if (this.direction != newDirection) {
-			setDirection(newDirection);			
+			setDirection(newDirection);
 		} else {
-			move();			
+			move();
 		}
 
 		setMoveImage();
@@ -71,6 +81,8 @@ public class Player {
 		setX(newX);
 		setY(newY);
 		currMap.wall();
+		
+//		System.out.println("X: " + posX + " | Y: " + posY);
 
 		updateMoveImage(newDirection);
 	}
@@ -98,7 +110,7 @@ public class Player {
 			RightPane.refreshUI(RightPane.getPotionInstance(), playerPotions);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -109,7 +121,7 @@ public class Player {
 			playerPotions.remove(index);
 		}
 	}
-	
+
 	public void changeHealth(int i) {
 		setHealth(getHealth() + i);
 	}
@@ -133,7 +145,7 @@ public class Player {
 			health = 5;
 
 		TopPane.updateHealthBar(health, 5);
-		
+
 		this.health = health;
 	}
 
@@ -146,7 +158,7 @@ public class Player {
 			energy = 0;
 		else if (energy > 5)
 			energy = 5;
-		
+
 		TopPane.updateEnergyBar(energy, 5);
 
 		this.energy = energy;
@@ -201,7 +213,8 @@ public class Player {
 	}
 
 	public void setX(double posX) {
-		this.posX = (int) posX;
+		if (enableMove)
+			this.posX = (int) posX;
 	}
 
 	public int getY() {
@@ -209,7 +222,8 @@ public class Player {
 	}
 
 	public void setY(double posY) {
-		this.posY = (int) posY;
+		if (enableMove)
+			this.posY = (int) posY;
 	}
 
 	public int getVelX() {
@@ -234,6 +248,30 @@ public class Player {
 
 	public ArrayList<Potion> getPotions() {
 		return playerPotions;
+	}
+
+	public Boolean getEnableMove() {
+		return enableMove;
+	}
+
+	public void setEnableMove(Boolean enableMove) {
+		this.enableMove = enableMove;
+	}
+
+	public int getGameState() {
+		return gameState;
+	}
+
+	public void setGameState(int gameState) {
+		this.gameState = gameState;
+	}
+
+	public Boolean getHasGoToDatabase() {
+		return hasGoToDatabase;
+	}
+
+	public void setHasGoToDatabase(Boolean hasGoToDatabase) {
+		this.hasGoToDatabase = hasGoToDatabase;
 	}
 
 	public static Player getInstance() {

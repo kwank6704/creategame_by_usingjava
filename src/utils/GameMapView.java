@@ -1,43 +1,110 @@
 package utils;
 
+import gui.game_component.MainGamePane;
+import javafx.application.Platform;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import map.ComputerCenter;
 import map.Elevator;
+import map.Floor1;
 import map.IScaleHall;
 import map.IScaleRoom;
+import map.Lanintania;
 import map.MapList;
+import map.TA_Room;
+import player.Gender;
+import player.Player;
 
 public class GameMapView {
-	public static ImageView getMapView(MapList currMap, ImageView playerImage) {
+	public static ImageView getMapView(MapList currMap, Pane playerPane, ImageView playerImage) {
 		switch (currMap) {
-		case IScaleRoom: {
-			return new IScaleRoom();
+		case I_SCALE_ROOM: {
+			return new IScaleRoom(playerPane, playerImage);
 		}
-		case IScaleHall: {
-			return new IScaleHall();
+		case I_SCALE_HALL: {
+			return new IScaleHall(playerPane, playerImage);
 		}
-		case Elevator: {
-			return new Elevator(playerImage);
+		case ELEVATOR: {
+			return new Elevator(playerPane, playerImage);
 		}
-		case LanIntania: {
-			return new IScaleHall();
+		case LAN_INTANIA: {
+			return new Lanintania(playerPane, playerImage);
 		}
-		case ComRoom: {
-			return new IScaleHall();
+		case COMPUTER_ROOM: {
+			return new ComputerCenter(playerPane, playerImage);
 		}
 		case TA_ROOM: {
-			return new IScaleHall();
+			return new TA_Room(playerPane, playerImage);
 		}
-		case GuildRoom: {
-			return new IScaleHall();
+		case GUILD_ROOM: {
+			return new IScaleHall(playerPane, playerImage);
 		}
-		case Floor1: {
-			return new IScaleHall();
+		case FLOOR_1: {
+			return new Floor1(playerPane, playerImage);
 		}
-		case Floor4: {
-			return new IScaleHall();
+		case FLOOR_4: {
+			return new IScaleHall(playerPane, playerImage);
 		}
 		default:
-			return new IScaleRoom();
+			return new IScaleRoom(playerPane, playerImage);
 		}
+	}
+	
+	public static StackPane gameMapCreate(MapList currMap) {		
+		Pane playerPane = new Pane();
+		Gender gameGender = MainGamePane.getGender();
+		
+		Player.buildPlayer(gameGender);
+		Player player = Player.getInstance();
+		ImageView playerImage = ImageUtils.createImageView(player.getMoveImage(), 128, 128);
+		
+		return gameMapCreate(currMap, playerPane, playerImage);
+	}
+	
+	public static StackPane gameMapCreate(MapList currMap, Pane playerPane, ImageView playerImage) {
+		StackPane gamePane = new StackPane();
+		
+		ImageView mapView = getMapView(currMap, playerPane, playerImage);
+		Image mapImage = mapView.getImage();
+		
+		Platform.runLater(() -> {
+			double ratio = mapImage.getHeight() / mapImage.getWidth();
+			double scale = Math.min(gamePane.getHeight(), gamePane.getWidth() * ratio) / mapImage.getHeight();
+			mapView.setFitHeight(scale * mapImage.getHeight());
+			mapView.setFitWidth(scale * mapImage.getWidth());
+			
+			System.out.println("Ratio: " + Double.toString(ratio));
+			System.out.println("Scale: " + Double.toString(scale));
+			System.out.println("Pane Height: " + Double.toString(gamePane.getHeight()));
+			System.out.println("Pane Width: " + Double.toString(gamePane.getWidth()));
+			          
+			playerImage.setFitHeight(scale * playerImage.getFitHeight() / 2);
+			playerImage.setFitWidth(scale * playerImage.getFitWidth() / 2);
+		});
+
+		gamePane.getChildren().addAll(mapView, playerPane);
+		gamePane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
+		
+		return gamePane;
+	}
+	
+	public static StackPane gameMapUpdate(MapList currMap) {
+		BorderPane mainGamePane = MainGamePane.getInstance();
+		
+		StackPane gamePane = (StackPane) mainGamePane.getCenter();
+		Pane playerPane = (Pane) gamePane.getChildren().get(1);
+		ImageView playerImage = (ImageView) playerPane.getChildren().get(0);
+		
+		gamePane = gameMapCreate(currMap, playerPane, playerImage);		
+		return gamePane;
 	}
 }

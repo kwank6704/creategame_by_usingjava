@@ -1,5 +1,14 @@
 package map;
 
 public enum MapList {
-	IScaleRoom, IScaleHall, Elevator, LanIntania, ComRoom, TA_ROOM, GuildRoom, Floor1, Floor4;
+	I_SCALE_ROOM,
+	I_SCALE_HALL,
+	ELEVATOR,
+	LAN_INTANIA,
+	COMPUTER_ROOM,
+	TA_ROOM,
+	GUILD_ROOM,
+	FLOOR_1,
+	FLOOR_4,
+	BUILD_4_HALL;
 }
