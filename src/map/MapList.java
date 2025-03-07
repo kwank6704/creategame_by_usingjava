@@ -1,0 +1,14 @@
+package map;
+
+public enum MapList {
+	I_SCALE_ROOM,
+	I_SCALE_HALL,
+	ELEVATOR,
+	LARN_GEAR,
+	COMPUTER_CENTER,
+	TA_ROOM,
+	GUILD_ROOM,
+	FLOOR_1,
+	FLOOR_4,
+	BUILD_4_HALL;
+}
